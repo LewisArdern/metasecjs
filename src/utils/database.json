@@ -1,0 +1,71 @@
+{
+    "dependencies": {
+        "express-session": {
+            "issues": [
+                {
+                    "name": "hardCodedSecret",
+                    "desc": "Ensure that the secret is not hard-coded",
+                    "references": [
+                        "https://expressjs.com/en/advanced/best-practice-security.html"
+                    ]
+                },
+                {
+                    "name": "httpOnlyFlag",
+                    "desc": "Ensure that the httpOnly flag is set for applications that do not need access to the cookie, e.g Angular",
+                    "references": [
+                        "option list of refs"
+                    ]
+                },
+                {
+                    "name": "secureFlag",
+                    "desc": "Ensure the 'secure' flag is set to prevent sessions sent over HTTP",
+                    "references": [
+                        "option list of refs"
+                    ]
+                },
+                {
+                    "name": "sameSiteFlag",
+                    "desc": "Ensure the sameSet flag is set with 'strict' or 'relaxed'",
+                    "references": [
+                        "option list of refs"
+                    ]
+                },
+                {
+                    "name": "path",
+                    "desc": "Ensure the path is set to '/'",
+                    "references": [
+                        "https://twitter.com/mikewest/status/1169919046713774085",
+                        "https://tools.ietf.org/html/draft-ietf-httpbis-rfc6265bis-03#section-4.1.3.2"
+                    ]
+                },
+                {
+                    "name": "cookiePrefixes",
+                    "desc": "Ensure the cookie name beings with a cookie prefix __Host or __Secure",
+                    "references": [
+                        "https://scotthelme.co.uk/tough-cookies/",
+                        "https://twitter.com/mikewest/status/1169919046713774085",
+                        "https://tools.ietf.org/html/draft-ietf-httpbis-rfc6265bis-03#section-4.1.3.2"
+                    ]
+                },
+                {
+                    "name": "memoryStore",
+                    "desc": "Ensure that the store is not the default 'Memory' store as this can be problematic for memory exhaustion and other security issues",
+                    "references": [
+                        "option list of refs"
+                    ]
+                }
+            ]
+        },
+        "mongoose": {
+            "issues": [
+                {
+                    "name": "todo",
+                    "desc": "todo",
+                    "references": [
+                        "todo"
+                    ]
+                }
+            ]
+        }
+    }
+}
