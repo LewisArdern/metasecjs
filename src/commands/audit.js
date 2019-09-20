@@ -1,4 +1,6 @@
 const {Command, flags} = require('@oclif/command')
+const {cli} = require('cli-ux')
+
 const regex = require('../utils/regex')
 const helper = require('../utils/helper')
 const audit = require('../utils/audit')
@@ -16,13 +18,15 @@ class AuditCommand extends Command {
       this.log('Checking Database for potential problem areas with identified dependencies')
       const suggestions = helper.createSuggestions(packages)
       this.log('Auditing third-party dependencies')
-      const dependencies = helper.retrieveDependencies(packages)
+      // const dependencies = helper.retrieveDependencies(packages)
       // const thirdparty = audit.thirdPartyDependencies(dependencies)
       // this.log(thirdparty)
-      this.log('Checking for ReDoS (This can take some time for large projects, so go get a coffee)')
-      // const jsFiles = await regex.findFiles(flags.dir, '/**/*.js')
-      // const re = redos.checkRedos(jsFiles)
-      // this.log(re)
+      const rd = await cli.confirm('Do you want to check for ReDoS?')
+      if (rd === true) {
+        this.log('Checking for ReDoS (This can take some time for large projects, so go get a coffee)')
+        const jsFiles = await regex.findFiles(flags.dir, '/**/*.js')
+        const re = redos.checkRedos(jsFiles)
+      }
       let el = {}
       for (let [key, value] of Object.entries(suggestions)) {
         if (value.usesElectron) {
@@ -31,9 +35,11 @@ class AuditCommand extends Command {
         }
       }
     }
-    this.log('Checking for secrets')
-    const secretList = secrets.truffleHog(flags.dir)
-    this.log(secretList)
+    const s = await cli.confirm('Do you want to look for Secrets?')
+    if (s === true) {
+      const secretList = secrets.truffleHog(flags.dir)
+      this.log(secretList)
+    }
     this.log('Running security linting against directory')
   }
 }
