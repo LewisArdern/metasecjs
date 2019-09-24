@@ -1,7 +1,7 @@
 {
     "dependencies": {
         "express-session": {
-            "issues": [
+            "recommendations": [
                 {
                     "name": "hardCodedSecret",
                     "desc": "Ensure that the secret is not hard-coded",
@@ -52,17 +52,6 @@
                     "desc": "Ensure that the store is not the default 'Memory' store as this can be problematic for memory exhaustion and other security issues",
                     "references": [
                         "option list of refs"
-                    ]
-                }
-            ]
-        },
-        "mongoose": {
-            "issues": [
-                {
-                    "name": "todo",
-                    "desc": "todo",
-                    "references": [
-                        "todo"
                     ]
                 }
             ]

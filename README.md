@@ -1,3 +1,14 @@
+--------------------Please Note:-------------------
+============
+*This is an unstable PoC, and is work in progress*
+
+This was written as a Proof-Of-Concept for AppSec Amsterdam, I should have most of the kinks worked out in a few weeks, so feel free to use it but issues will exist, and it is not currently OS agnostic. 
+
+We have to start somewhere, and well, this is somewhere!
+
+-Lewis 
+
+
 metasecjs
 =========
 

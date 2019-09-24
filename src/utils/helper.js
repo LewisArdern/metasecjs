@@ -1,5 +1,8 @@
+/* eslint-disable max-depth */
 const fs = require('fs')
 const db = JSON.parse(fs.readFileSync(`${getDirname()}/database.json`))
+const createCsvWriter = require('csv-writer').createObjectCsvWriter
+const path = require('path')
 
 function getDirname() {
   return __dirname
@@ -48,5 +51,35 @@ function matchDeps(dependencies) {
   }
   return deps
 }
+
+function writeSuggestions(suggestions, outDir) {
+  let records = []
+  // TODO: refactor required but YOLO for PoC.
+  for (let [_key, value] of Object.entries(suggestions)) {
+    for (let [k, v] of Object.entries(value)) {
+      if (k !== 'usesElectron') {
+        for (let [ki, vi] of Object.entries(v)) {
+          if (ki === 'recommendations') {
+            for (let [a, b] of Object.entries(vi)) {
+              let record = {}
+              record.name = k
+              record.version = v.version
+              record.guidance = b.desc
+              record.references = b.references
+              records.push(record)
+            }
+          }
+        }
+      }
+    }
+  }
+  if (records !== []) {
+    const csvWriter = createCsvWriter({path: path.resolve(outDir + '/suggestions.csv'), header: [{id: 'name', title: 'Package'}, {id: 'version', title: 'Version'}, {id: 'guidance', title: 'Guidance'}, {id: 'outcome', title: 'Outcome'}, {id: 'comments', title: 'Assessor Comments'}, {id: 'references', title: 'References'}]})
+    csvWriter.writeRecords(records).then(() => {
+    })
+  }
+}
+
 module.exports.createSuggestions = createSuggestions
 module.exports.retrieveDependencies = retrieveDependencies
+module.exports.writeSuggestions = writeSuggestions
