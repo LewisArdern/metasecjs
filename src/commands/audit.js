@@ -50,14 +50,14 @@ class AuditCommand extends Command {
     }
     const s = await cli.confirm('Do you want to look for Secrets?')
     if (s === true) {
-      const git = await regex.findFiles(flags.dir, '/**/.git')
-      console.log(Object.entries(git).includes([]))
-      if (git.length !== 0) {
-        this.log('.git found, running truffleHog')
-        const secretList = secrets.truffleHog(flags.dir)
-        this.log(secretList)
-      }
-      // TODO: ripgrep
+      // TODO: Fix regex, fast-glob *.git does not find hidden files
+      // const git = await regex.findFiles(flags.dir, '/*\\.git')
+      // this.log(git)
+      // if (git.length !== 0) {
+      //   this.log('.git found, running truffleHog')
+      //   secrets.truffleHog(git, outDir)
+      // }
+      secrets.rg(flags.dir, outDir)
     }
     this.log('Running security linting against directory')
     lint.checkLint(flags.dir, outDir)

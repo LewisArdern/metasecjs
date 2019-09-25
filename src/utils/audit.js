@@ -4,6 +4,7 @@ const cp =  require('child_process')
 const uuid = require('uuid/v4')
 function thirdPartyDependencies(dependencies, out) {
   let res = {}
+  // TODO: Fix issue with only saving one audit result
   Object.keys(dependencies).forEach(function (e) {
     const dir = path.dirname(e)
     const dirList = fs.readdirSync(dir)
@@ -17,7 +18,7 @@ function thirdPartyDependencies(dependencies, out) {
       audit.on('close', function (code) {
       })
     } else if (dirList.includes('package-lock.json' || 'npm-shrinkwrap.json')) {
-      const audit = cp.exec(`cd ${dir} && npm audit --json > ${path.resolve(out + '/' + uuid() + 'audit.json')}`)
+      const audit = cp.exec(`cd ${dir} && npm audit --json > ${path.resolve(out + '/audit.json')}`)
       audit.stderr.on('data', function (code) {
         console.log('issue with audit' + code)
       })
