@@ -33,7 +33,8 @@ Current functionality:
 2. Set up ripgrep by following the instructions
     - https://github.com/BurntSushi/ripgrep
 3. Set up vuln-regex-detector following the instructions
-    - https://github.com/davisjam/vuln-regex-detector/    
+    - https://github.com/davisjam/vuln-regex-detector/
+    - Once installed, set the path in the config
 
 # Usage
 
