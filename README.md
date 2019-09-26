@@ -10,7 +10,7 @@ We have to start somewhere, and well, this is somewhere!
 -Lewis 
 
 
-metasecjs
+metasec.js
 =========
 
 Security Meta Analysis For JavaScript Applications.
@@ -74,13 +74,7 @@ display help for metasec
 
 ```
 USAGE
-  $ metasec help [COMMAND] 123
-
-ARGUMENTS
-  COMMAND  command to show help for
-
-OPTIONS
-  --all  see all commands in CLI
+  $ metasec help audit
 ```
 
 <!-- commandsstop -->

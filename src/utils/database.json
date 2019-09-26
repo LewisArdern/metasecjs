@@ -13,21 +13,21 @@
                     "name": "httpOnlyFlag",
                     "desc": "Ensure that the httpOnly flag is set for applications that do not need access to the cookie, e.g Angular",
                     "references": [
-                        "option list of refs"
+                        "https://www.owasp.org/index.php/HttpOnly"
                     ]
                 },
                 {
                     "name": "secureFlag",
                     "desc": "Ensure the 'secure' flag is set to prevent sessions sent over HTTP",
                     "references": [
-                        "option list of refs"
+                        "https://www.owasp.org/index.php/SecureFlag"
                     ]
                 },
                 {
                     "name": "sameSiteFlag",
                     "desc": "Ensure the sameSet flag is set with 'strict' or 'relaxed'",
                     "references": [
-                        "option list of refs"
+                        "https://web.dev/samesite-cookies-explained"
                     ]
                 },
                 {
@@ -51,7 +51,7 @@
                     "name": "memoryStore",
                     "desc": "Ensure that the store is not the default 'Memory' store as this can be problematic for memory exhaustion and other security issues",
                     "references": [
-                        "option list of refs"
+                        "https://github.com/expressjs/session#api"
                     ]
                 }
             ]
