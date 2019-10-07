@@ -1,6 +1,5 @@
 const path = require('path')
-const fs = require('fs')
-
+const process = require('process')
 const cp =  require('child_process')
 
 function electronegativity(pkg, output) {
