@@ -2,6 +2,7 @@ const path = require('path')
 const fs = require('fs')
 const cp =  require('child_process')
 const uuid = require('uuid/v4')
+
 function thirdPartyDependencies(dependencies, out) {
   let res = {}
   // TODO: Fix issue with only saving one audit result
@@ -10,6 +11,7 @@ function thirdPartyDependencies(dependencies, out) {
     const dirList = fs.readdirSync(dir)
     if (!dirList.includes('package-lock.json' || 'npm-shrinkwrap.json' || 'yarn.lock')) {
       res[e] = 'Third-party audit not possible with npm or yarn as dependencies have not been installed'
+      // TODO: Run retirejs or another component if npm or yarn is not accessible...
     } else if (dirList.includes('yarn.lock')) {
       const audit = cp.exec(`cd ${dir} && yarn audit --json > ${path.resolve(out + '/' + uuid() + 'audit.json')}`)
       audit.stderr.on('data', function (code) {

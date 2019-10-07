@@ -1,46 +1,42 @@
 const {Command, flags} = require('@oclif/command')
 const {cli} = require('cli-ux')
-const path = require('path')
-const fs = require('fs')
-const moment = require('moment')
 
 const regex = require('../utils/regex')
+const setup = require('../utils/setup')
 const helper = require('../utils/helper')
 const audit = require('../utils/audit')
 const redos = require('../utils/redos')
 const electron = require('../utils/electron')
 const lint = require('../utils/lint')
 const secrets = require('../utils/secrets')
+
 class AuditCommand extends Command {
   async run() {
     const {flags} = this.parse(AuditCommand)
-    const outDir = path.resolve(`${flags.output}/${flags.project}/${moment().format('DD-MM-YYYY')}`)
-    if (!fs.existsSync(path.resolve(flags.output))) {
-      fs.mkdirSync(flags.output)
-    }
-    if (!fs.existsSync(path.resolve(`${flags.output}/${flags.project}`))) {
-      fs.mkdirSync(path.resolve(`${flags.output}/${flags.project}`))
-    }
-    if (!fs.existsSync(outDir)) {
-      fs.mkdirSync(outDir)
-    }
+
+    const outDir = setup.setupFolders(flags)
     // Retrieve package.json(s)
     const packages = await regex.findFiles(flags.dir, '/**/package.json')
     // Read package.json and match to database for suggestions
     if (packages !== []) {
       this.log(`Found ${packages.length} package.json, beginning audit`)
       this.log('Checking Database for potential problem areas with identified dependencies')
+      // Looks at the package.json file for matches against the 'repository' and reports any security concerns with a particular package
       const suggestions = helper.createSuggestions(packages)
       await helper.writeSuggestions(suggestions, outDir)
       this.log('Auditing third-party dependencies')
+      // Runs third-party dependency checking against package.json files that were identified
       const dependencies = helper.retrieveDependencies(packages)
       audit.thirdPartyDependencies(dependencies, outDir)
+      // Command-line verification if ReDoS checking should be performed
       const rd = await cli.confirm('Do you want to check for ReDoS?')
       if (rd === true) {
         this.log('Checking for ReDoS (This can take some time for large projects, so go get a coffee)')
+        // Globs all of the JavaScript files in the provided directory and will run each file against vuln-regex-detect
         const jsFiles = await regex.findFiles(flags.dir, '/**/*.js')
         redos.checkRedos(jsFiles, outDir)
       }
+      // Currently very hacky but identifies the use of electron in the package.json file, if it exists runs electronegativity
       for (let [key, value] of Object.entries(suggestions)) {
         if (value.usesElectron) {
           this.log('Application uses Electron, running dyosec')
@@ -48,6 +44,8 @@ class AuditCommand extends Command {
         }
       }
     }
+    // Command-line verification if secrets checking should be performed
+
     const s = await cli.confirm('Do you want to look for Secrets?')
     if (s === true) {
       // TODO: Fix regex, fast-glob *.git does not find hidden files
