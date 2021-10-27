@@ -1,0 +1,11 @@
+rules:
+- id: regex
+  message:  $VALUE
+  languages: [js]
+  severity: INFO
+  patterns:
+    - pattern-either: 
+      - pattern:  | 
+          $REGEX = $VALUE 
+          ...
+          $REGEX.test($ASSIGNED)

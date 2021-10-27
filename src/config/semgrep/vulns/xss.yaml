@@ -1,0 +1,9 @@
+rules:
+- id: xss
+  message:  DOM XSS
+  languages: [js]
+  severity: INFO
+  patterns:
+    - pattern-either: 
+      - pattern:  | 
+           $($QUERYSELECTOR).attr("href",(new URLSearchParams(window.location.search)).get($PARAM));

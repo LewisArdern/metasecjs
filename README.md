@@ -1,15 +1,3 @@
-Please note:
-======
-
-*This is an unstable PoC, and is work in progress!*
-
-This was written over a few evenings for AppSec Amsterdam, so feel free to use it but issues will exist, and it is not currently OS agnostic or robus *yet*. 
-
-We have to start somewhere, and well, this is somewhere!
-
--Lewis 
-
-
 metasec.js
 =========
 
@@ -19,26 +7,22 @@ Security Meta Analysis For JavaScript Applications.
 [![Downloads/week](https://img.shields.io/npm/dw/metasecjs.svg)](https://npmjs.org/package/metasecjs)
 [![License](https://img.shields.io/npm/l/metasecjs.svg)](https://github.com/LewisArdern/metasecjs/blob/master/package.json) -->
 
-Current functionality:
+Experimental functionality:
 
 * Reviews the package.json and provides guidance on potential issues or misconfigurations when using a particular dependency from a repository
 * Performs third-party dependency scanning using npm or yarn audit
-* Identifies secrets with [ripgrep](https://github.com/BurntSushi/ripgrep)
-* Lints for security issues using [eslint](https://eslint.org)
-* Finds ReDoS issues with [vuln-regex-detector](https://github.com/davisjam/vuln-regex-detector#readme)
+* Identifies secrets using [semgrep](https://github.com/returntocorp/semgrep)
+* Identifies security issues using [semgrep](https://github.com/returntocorp/semgrep)
+* Finds ReDoS issues with [recheck](https://github.com/MakeNowJust-Labo/recheck)
+* Finds Electron issues with [electronegativity](https://github.com/doyensec/electronegativity)
 
 
 # Set-up
 1. Clone project and run ```npm install```
-2. Set up ripgrep by following the instructions
-    - https://github.com/BurntSushi/ripgrep
-3. Set up vuln-regex-detector following the instructions
-    - https://github.com/davisjam/vuln-regex-detector/
-    - Once installed, set the path in the config
+2. Set up Semgrep CLI https://semgrep.dev
 
 # Usage
 
-In the future this will be a npm module, but as it has too many third-party components, publishing does not make sense.
 <!-- usage -->
 ```sh-session
 $ git clone https://github.com/lewisardern/metasecjs

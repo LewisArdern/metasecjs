@@ -5,9 +5,9 @@ const regex = require('../utils/regex')
 const setup = require('../utils/setup')
 const helper = require('../utils/helper')
 const audit = require('../utils/audit')
-const redos = require('../utils/redos')
+const redos = require('../utils/recheck')
 const electron = require('../utils/electron')
-const lint = require('../utils/lint')
+const semgrep = require('../utils/vulnerabilities')
 const secrets = require('../utils/secrets')
 
 class AuditCommand extends Command {
@@ -28,14 +28,7 @@ class AuditCommand extends Command {
       // Runs third-party dependency checking against package.json files that were identified
       const dependencies = helper.retrieveDependencies(packages)
       audit.thirdPartyDependencies(dependencies, outDir)
-      // Command-line verification if ReDoS checking should be performed
-      const rd = await cli.confirm('Do you want to check for ReDoS?')
-      if (rd === true) {
-        this.log('Checking for ReDoS (This can take some time for large projects, so go get a coffee)')
-        // Globs all of the JavaScript files in the provided directory and will run each file against vuln-regex-detect
-        const jsFiles = await regex.findFiles(flags.dir, '/**/*.js')
-        redos.checkRedos(jsFiles, outDir)
-      }
+      await redos.checkRedos(flags.dir, outDir)
       // Currently very hacky but identifies the use of electron in the package.json file, if it exists runs electronegativity
       for (let [key, value] of Object.entries(suggestions)) {
         if (value.usesElectron) {
@@ -45,20 +38,9 @@ class AuditCommand extends Command {
       }
     }
     // Command-line verification if secrets checking should be performed
-
-    const s = await cli.confirm('Do you want to look for Secrets?')
-    if (s === true) {
-      // TODO: Fix regex, fast-glob *.git does not find hidden files
-      // const git = await regex.findFiles(flags.dir, '/*\\.git')
-      // this.log(git)
-      // if (git.length !== 0) {
-      //   this.log('.git found, running truffleHog')
-      //   secrets.truffleHog(git, outDir)
-      // }
-      secrets.rg(flags.dir, outDir)
-    }
-    this.log('Running security linting against directory')
-    lint.checkLint(flags.dir, outDir)
+    await secrets.semgrepSecrets(flags.dir, outDir)
+    this.log('Running semgrep against directory')
+    semgrep.semgrep(flags.dir, outDir)
   }
 }
 
