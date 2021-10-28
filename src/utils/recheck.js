@@ -6,7 +6,7 @@ const { check } = require("@makenowjust-labo/recheck");
 
 async function semgrep(scanFolder) {
   // TODO: Change to pull from config
-  let res = cp.execSync(`semgrep --config ${path.resolve(__dirname+'/../config/semgrep/detection/regex.yaml')} --json ${scanFolder}`)
+  let res = cp.execSync(`semgrep  --exclude node_modules --config ${path.resolve(__dirname+'/../config/semgrep/detection/regex.yaml')} --json ${scanFolder}`)
   return res
 }
 

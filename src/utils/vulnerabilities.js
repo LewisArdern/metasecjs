@@ -4,7 +4,7 @@ const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
 async function semgrep(scanDir, outDir) {
-  const { stdout, stderr } = await exec(`semgrep  --config ${path.resolve(__dirname+'/../config/semgrep/vulns')} --config "p/owasp-top-ten"  --config "p/eslint-plugin-security" --config "p/react" --config "p/nodejs" --config "p/command-injection"  --config "p/nodejsscan" --config "p/javascript" --config "p/xss" --json ${scanDir}`)
+  const { stdout, stderr } = await exec(`semgrep  --exclude node_modules --config ${path.resolve(__dirname+'/../config/semgrep/vulns')} --config "p/owasp-top-ten"  --config "p/eslint-plugin-security" --config "p/react" --config "p/nodejs" --config "p/command-injection"  --config "p/nodejsscan" --config "p/javascript" --config "p/xss" --json ${scanDir}`)
   let data = JSON.parse(stdout)
   if(data.results.length > 0) {
     await fs.writeFile(path.resolve(outDir + '/vulns.json'), JSON.stringify(stdout))

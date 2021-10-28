@@ -4,7 +4,7 @@ const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
 async function semgrep(scanFolder, outDir) {
-  const { stdout, stderr } = await exec(`semgrep --config ${path.resolve(__dirname+'/../config/semgrep/secrets')} --config "p/secrets" --json ${scanFolder}`)
+  const { stdout, stderr } = await exec(`semgrep --exclude node_modules --config ${path.resolve(__dirname+'/../config/semgrep/secrets')} --config "p/secrets" --json ${scanFolder}`)
   let data = JSON.parse(stdout)
   if(data.results.length > 0) {
     await fs.writeFile(path.resolve(outDir + '/secrets.json'), JSON.stringify(stdout))
